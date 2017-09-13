@@ -1,0 +1,57 @@
+{
+  "name": "del-nm",
+  "version": "0.0.0",
+  "description": "Delete `node_modules` and lockfile (if any)",
+  "license": "MIT",
+  "repository": "https://github.com/luftywiranda13/del-nm",
+  "author": {
+    "name": "Lufty Wiranda",
+    "email": "lufty.wiranda@gmail.com",
+    "url": "https://www.instagram.com/luftywiranda13"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "precommit": "remove-lockfiles",
+    "test": "xo && jest"
+  },
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "del": "^3.0.0",
+    "has-lockfile": "^1.0.2"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "jest": "^21.0.2",
+    "make-dir": "^1.0.0",
+    "remove-lockfiles": "^1.1.1",
+    "tempy": "^0.2.0",
+    "xo": "^0.18.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true
+  },
+  "xo": {
+    "space": true,
+    "envs": [
+      "jest"
+    ],
+    "rules": {
+      "operator-linebreak": "off"
+    }
+  },
+  "keywords": [
+    "delete",
+    "remove",
+    "node_modules",
+    "npm",
+    "yarn",
+    "package",
+    "dependencies",
+    "reinstall"
+  ]
+}
