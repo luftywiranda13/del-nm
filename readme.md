@@ -18,7 +18,7 @@ npm install --save del-nm
 
 ```
 $ pwd
-/luftywiranda/foo
+/Users/luftywiranda/foo
 
 ...
 └── luftywiranda
@@ -35,8 +35,25 @@ $ pwd
 ```js
 const delNm = require('del-nm');
 
-delNm('./');
-delNm('../bar');
+delNm('./').then(paths => {
+  console.log(paths);
+  /*
+    [
+      '/Users/luftywiranda/foo/node_modules',
+      '/Users/luftywiranda/foo/yarn.lock'
+    ]
+  */
+});
+
+delNm('../bar').then(paths => {
+  console.log(paths);
+  /*
+    [
+      '/Users/luftywiranda/bar/node_modules',
+      '/Users/luftywiranda/bar/package-lock'
+    ]
+  */
+});
 ```
 
 ## API
@@ -47,7 +64,15 @@ delNm('../bar');
 
 Type: `string`
 
-Directory that contains `node_modules`
+Returns a promise for an array of deleted paths.
+
+### delNm.sync(path)
+
+#### path
+
+Type: `string`
+
+Returns an array of deleted paths.
 
 ## Related
 
