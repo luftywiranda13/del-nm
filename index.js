@@ -1,9 +1,12 @@
 'use strict';
 
+const path = require('path');
+
 const del = require('del');
 const hasLockfile = require('has-lockfile');
 
 module.exports = cwd => {
+  cwd = path.resolve(cwd || process.cwd());
   const lockfile = hasLockfile();
 
   // Returns a promise of an array of deleted paths
@@ -13,6 +16,7 @@ module.exports = cwd => {
 };
 
 module.exports.sync = cwd => {
+  cwd = path.resolve(cwd || process.cwd());
   const lockfile = hasLockfile();
 
   // Returns an array of deleted paths
