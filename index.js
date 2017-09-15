@@ -7,7 +7,8 @@ const hasLockfile = require('has-lockfile');
 
 module.exports = cwd => {
   cwd = path.resolve(cwd || process.cwd());
-  const lockfile = hasLockfile();
+
+  const lockfile = hasLockfile(cwd);
 
   // Returns a promise of an array of deleted paths
   return lockfile
@@ -17,7 +18,8 @@ module.exports = cwd => {
 
 module.exports.sync = cwd => {
   cwd = path.resolve(cwd || process.cwd());
-  const lockfile = hasLockfile();
+
+  const lockfile = hasLockfile(cwd);
 
   // Returns an array of deleted paths
   return lockfile
