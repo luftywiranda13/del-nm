@@ -21,10 +21,10 @@ $ pwd
 
 ...
 └── luftywiranda
-    └── foo
-        ├── node_modules
-        ├── package.json
-        └── yarn.lock
+    ├── foo
+    │   ├── node_modules
+    │   ├── package.json
+    │   └── yarn.lock
     └── bar
         ├── node_modules
         ├── package.json
