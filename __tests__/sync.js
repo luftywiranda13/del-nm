@@ -2,56 +2,56 @@
 
 jest.mock('has-lockfile');
 
-const fs = require('fs');
 const path = require('path');
 
 const lockfile = require('has-lockfile');
 const makeDir = require('make-dir');
+const pathExists = require('path-exists');
 const tempy = require('tempy');
 
 const delNm = require('../');
 
-let tempDir;
-
-const notExists = files => {
-  for (const file of files) {
-    expect(fs.existsSync(path.join(tempDir, file))).toBe(false);
-  }
-};
-
-const dummyFolder = name => {
-  tempDir = tempy.directory();
-  return makeDir(path.join(tempDir, name)).then(path => path);
-};
-
-const dummyLockfile = name => tempy.file({name});
-
 describe('sync', () => {
   beforeEach(async () => {
-    await dummyFolder('node_modules');
+    // Creates `node_modules` in temporary directory
+    await makeDir(path.join(tempy.directory(), 'node_modules')).then(
+      path => path
+    );
   });
 
   it('deletes `node_modules`', () => {
-    delNm.sync(tempDir);
+    delNm.sync(tempy.directory());
 
-    notExists('node_modules');
+    expect(pathExists.sync(path.join(tempy.directory(), 'node_modules'))).toBe(
+      false
+    );
   });
 
   it('also deletes `package-lock.json`', () => {
-    dummyLockfile('package-lock.json');
+    tempy.file({name: 'package-lock.json'});
     lockfile.mockImplementation(() => 'package-lock.json');
 
-    delNm.sync(tempDir);
+    delNm.sync(tempy.directory());
 
-    notExists(['node_modules', 'package-lock.json']);
+    expect(pathExists.sync(path.join(tempy.directory(), 'node_modules'))).toBe(
+      false
+    );
+    expect(
+      pathExists.sync(path.join(tempy.directory(), 'package-lock.json'))
+    ).toBe(false);
   });
 
   it('also deletes `yarn.lock`', () => {
-    dummyLockfile('yarn.lock');
-    lockfile.mockImplementation(() => 'package-lock.json');
+    tempy.file({name: 'yarn.lock'});
+    lockfile.mockImplementation(() => 'yarn.lock');
 
-    delNm.sync(tempDir);
+    delNm.sync(tempy.directory());
 
-    notExists(['node_modules', 'yarn.lock']);
+    expect(pathExists.sync(path.join(tempy.directory(), 'node_modules'))).toBe(
+      false
+    );
+    expect(
+      pathExists.sync(path.join(tempy.directory(), 'yarn.lock'))
+    ).toBe(false);
   });
 });
