@@ -6,19 +6,17 @@ const hasLockfile = require('has-lockfile');
 module.exports = cwd => {
   const lockfile = hasLockfile();
 
-  if (lockfile) {
-    return del(['node_modules', lockfile], {cwd}).then(paths => paths);
-  }
-
-  return del('node_modules', {cwd}).then(paths => paths);
+  // Returns a promise of an array of deleted paths
+  return lockfile
+    ? del(['node_modules', lockfile], {cwd}).then(paths => paths)
+    : del('node_modules', {cwd}).then(paths => paths);
 };
 
 module.exports.sync = cwd => {
   const lockfile = hasLockfile();
 
-  if (lockfile) {
-    return del.sync(['node_modules', lockfile], {cwd});
-  }
-
-  return del.sync('node_modules', {cwd});
+  // Returns an array of deleted paths
+  return lockfile
+    ? del.sync(['node_modules', lockfile], {cwd})
+    : del.sync('node_modules', {cwd});
 };
