@@ -12,8 +12,8 @@ module.exports = cwd => {
 
   // Returns a promise of an array of deleted paths
   return lockfile
-    ? del(['node_modules', lockfile], {cwd}).then(paths => paths)
-    : del('node_modules', {cwd}).then(paths => paths);
+    ? del(['node_modules', lockfile], {cwd})
+    : del('node_modules', {cwd});
 };
 
 module.exports.sync = cwd => {
