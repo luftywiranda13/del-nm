@@ -1,10 +1,7 @@
 'use strict';
 
-jest.mock('has-lockfile');
-
 const path = require('path');
 
-const lockfile = require('has-lockfile');
 const makeDir = require('make-dir');
 const pathExists = require('path-exists');
 const tempy = require('tempy');
@@ -29,7 +26,6 @@ describe('async', () => {
 
   it('also deletes `package-lock.json`', async () => {
     tempy.file({name: 'package-lock.json'});
-    lockfile.mockImplementation(() => 'package-lock.json');
 
     await delNm(tempy.directory());
 
@@ -43,7 +39,6 @@ describe('async', () => {
 
   it('also deletes `yarn.lock`', async () => {
     tempy.file({name: 'yarn.lock'});
-    lockfile.mockImplementation(() => 'yarn.lock');
 
     await delNm(tempy.directory());
 
