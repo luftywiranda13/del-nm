@@ -34,7 +34,7 @@ $ pwd
 ```js
 const delNm = require('del-nm');
 
-delNm('./').then(paths => {
+delNm().then(paths => {
   console.log(paths);
   /*
     [
@@ -49,7 +49,7 @@ delNm('../bar').then(paths => {
   /*
     [
       '/Users/luftywiranda/bar/node_modules',
-      '/Users/luftywiranda/bar/package-lock'
+      '/Users/luftywiranda/bar/package-lock.json'
     ]
   */
 });
