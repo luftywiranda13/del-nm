@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-
 const del = require('del');
 const hasLockfile = require('has-lockfile');
 
