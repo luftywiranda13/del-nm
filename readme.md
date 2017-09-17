@@ -1,7 +1,5 @@
 # del-nm
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/luftywiranda13/del-nm.svg)](https://greenkeeper.io/)
-
 [![Package Version](https://img.shields.io/npm/v/del-nm.svg)](https://www.npmjs.com/package/del-nm)
 [![Build Status: Linux](https://img.shields.io/travis/luftywiranda13/del-nm/master.svg)](https://travis-ci.org/luftywiranda13/del-nm)
 [![Build Status: Windows](https://img.shields.io/appveyor/ci/luftywiranda13/del-nm/master.svg)](https://ci.appveyor.com/project/luftywiranda13/del-nm)
