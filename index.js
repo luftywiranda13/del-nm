@@ -6,19 +6,19 @@ const hasLockfile = require('has-lockfile');
 module.exports = cwd => {
   cwd = cwd || process.cwd();
 
-  const lockfile = hasLockfile(cwd);
+  const lockfiles = hasLockfile(cwd);
 
-  return lockfile
-    ? del(['node_modules', lockfile], {cwd})
+  return lockfiles
+    ? del(lockfiles.concat(['node_modules']), {cwd})
     : del('node_modules', {cwd});
 };
 
 module.exports.sync = cwd => {
   cwd = cwd || process.cwd();
 
-  const lockfile = hasLockfile(cwd);
+  const lockfiles = hasLockfile(cwd);
 
-  return lockfile
-    ? del.sync(['node_modules', lockfile], {cwd})
+  return lockfiles
+    ? del.sync(lockfiles.concat(['node_modules']), {cwd})
     : del.sync('node_modules', {cwd});
 };

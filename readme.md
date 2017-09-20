@@ -59,18 +59,18 @@ delNm('../bar').then(paths => {
 
 ### delNm([path])
 
-Returns a promise for an array of deleted paths.
+Returns `Promise<Array>` of deleted paths.
 
 ### delNm.sync([path])
 
-Returns an array of deleted paths.
+Returns `Array` of deleted paths.
 
 #### path
  
 Type: `string`<br />
 Default: `process.cwd()`
  
-Location of the directory to perform deletion
+Path to perform deletion
 
 ## Related
 
