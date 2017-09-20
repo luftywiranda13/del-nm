@@ -1,20 +1,22 @@
 {
   "name": "del-nm",
   "version": "2.2.0",
-  "description": "Delete `node_modules` and lockfile (if any)",
+  "description": "Delete `node_modules` and lockfiles",
   "license": "MIT",
   "repository": "https://github.com/luftywiranda13/del-nm",
   "author": {
     "name": "Lufty Wiranda",
     "email": "lufty.wiranda@gmail.com",
-    "url": "https://www.instagram.com/luftywiranda13"
+    "url": "https://www.luftywiranda.com"
   },
   "engines": {
     "node": ">=4"
   },
   "scripts": {
-    "precommit": "remove-lockfiles",
-    "test": "xo && jest"
+    "precommit": "remove-lockfiles && xo --fix && lint-staged",
+    "lint": "xo",
+    "test:watch": "jest --watch",
+    "test": "jest --coverage"
   },
   "files": [
     "index.js"
@@ -25,11 +27,14 @@
   },
   "devDependencies": {
     "async-to-gen": "^1.3.3",
+    "eslint-config-prettier": "^2.9.0",
     "husky": "^0.14.3",
-    "jest": "^21.1.0",
-    "make-dir": "^1.0.0",
-    "remove-lockfiles": "^1.3.0",
-    "tempy": "^0.2.0",
+    "jest": "^22.0.4",
+    "lint-staged": "^6.0.0",
+    "make-dir": "^1.1.0",
+    "prettier": "^1.9.2",
+    "remove-lockfiles": "^1.4.2",
+    "tempy": "^0.2.1",
     "xo": "^0.18.2"
   },
   "jest": {
@@ -38,14 +43,21 @@
       "^.+\\.js$": "async-to-gen"
     }
   },
+  "lint-staged": {
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
   "xo": {
-    "space": true,
+    "extends": "prettier",
     "envs": [
       "jest"
-    ],
-    "rules": {
-      "operator-linebreak": "off"
-    }
+    ]
   },
   "keywords": [
     "delete",

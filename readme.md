@@ -2,10 +2,12 @@
 
 [![Package Version](https://img.shields.io/npm/v/del-nm.svg)](https://www.npmjs.com/package/del-nm)
 [![Build Status: Linux](https://img.shields.io/travis/luftywiranda13/del-nm/master.svg)](https://travis-ci.org/luftywiranda13/del-nm)
-[![Build Status: Windows](https://img.shields.io/appveyor/ci/luftywiranda13/del-nm/master.svg)](https://ci.appveyor.com/project/luftywiranda13/del-nm)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/50ip4itb26hn8y3k/branch/master?svg=true)](https://ci.appveyor.com/project/luftywiranda13/del-nm/branch/master)
 [![Downloads Status](https://img.shields.io/npm/dm/del-nm.svg)](https://npm-stat.com/charts.html?package=del-nm&from=2016-04-01)
 
-Delete `node_modules` and lockfile (if any)
+Delete `node_modules` and lockfiles.
+
+Useful to perform fresh installation of dependencies.
 
 ## Installation
 
@@ -15,7 +17,7 @@ npm install --save del-nm
 
 ## Usage
 
-```
+```sh
 $ pwd
 /Users/luftywiranda/foo
 
@@ -66,16 +68,16 @@ Returns `Promise<Array>` of deleted paths.
 Returns `Array` of deleted paths.
 
 #### path
- 
+
 Type: `string`<br />
 Default: `process.cwd()`
- 
+
 Path to perform deletion
 
 ## Related
 
-- [del-nm-cli](https://github.com/luftywiranda13/del-nm-cli) - CLI for this module
+* [del-nm-cli](https://github.com/luftywiranda13/del-nm-cli) － CLI for this module
 
 ## License
 
-MIT &copy; [Lufty Wiranda](https://www.instagram.com/luftywiranda13)
+MIT &copy; [Lufty Wiranda](https://www.luftywiranda.com)

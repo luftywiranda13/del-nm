@@ -19,7 +19,7 @@ const createDummy = lockfile => {
   tempDir = tempy.directory();
 
   if (lockfile) {
-    tempy.file({name: lockfile});
+    tempy.file({ name: lockfile });
   }
 
   return makeDir.sync(path.join(tempDir, 'node_modules'));
