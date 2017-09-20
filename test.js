@@ -15,52 +15,66 @@ const notExists = (rootDir, files) => {
 
 let tempDir;
 
-beforeEach(async () => {
+const createDummy = lockfile => {
   tempDir = tempy.directory();
 
-  await makeDir(path.join(tempDir, 'node_modules'));
+  if (lockfile) {
+    tempy.file({name: lockfile});
+  }
+
+  return makeDir.sync(path.join(tempDir, 'node_modules'));
+};
+
+describe('only `node_modules`', () => {
+  beforeEach(() => {
+    createDummy();
+  });
+
+  test('async', async () => {
+    await delNm(tempDir);
+
+    notExists(tempDir, 'node_modules');
+  });
+
+  test('sync', () => {
+    delNm.sync(tempDir);
+
+    notExists(tempDir, 'node_modules');
+  });
 });
 
-it('deletes `node_modules` - async', async () => {
-  await delNm(tempDir);
+describe('with `package-lock.json`', () => {
+  beforeEach(() => {
+    createDummy('package-lock.json');
+  });
 
-  notExists(tempDir, 'node_modules');
+  test('async', async () => {
+    await delNm(tempDir);
+
+    notExists(tempDir, ['node_modules', 'package-lock.json']);
+  });
+
+  test('sync', () => {
+    delNm.sync(tempDir);
+
+    notExists(tempDir, ['node_modules', 'package-lock.json']);
+  });
 });
 
-it('deletes `node_modules` - sync', () => {
-  delNm.sync(tempDir);
+describe('with `yarn.lock`', () => {
+  beforeEach(() => {
+    createDummy('yarn.lock');
+  });
 
-  notExists(tempDir, 'node_modules');
-});
+  test('async', async () => {
+    await delNm(tempDir);
 
-it('also deletes `package-lock.json` - async', async () => {
-  tempy.file({name: 'package-lock.json'});
+    notExists(tempDir, ['node_modules', 'yarn.lock']);
+  });
 
-  await delNm(tempDir);
+  test('sync', () => {
+    delNm.sync(tempDir);
 
-  notExists(tempDir, ['node_modules', 'package-lock.json']);
-});
-
-it('also deletes `package-lock.json` - sync', () => {
-  tempy.file({name: 'package-lock.json'});
-
-  delNm.sync(tempDir);
-
-  notExists(tempDir, ['node_modules', 'package-lock.json']);
-});
-
-it('also deletes `yarn.lock` - async', async () => {
-  tempy.file({name: 'yarn.lock'});
-
-  await delNm(tempDir);
-
-  notExists(tempDir, ['node_modules', 'package-lock.json']);
-});
-
-it('also deletes `yarn.lock` - sync', () => {
-  tempy.file({name: 'yarn.lock'});
-
-  delNm.sync(tempDir);
-
-  notExists(tempDir, ['node_modules', 'yarn.lock']);
+    notExists(tempDir, ['node_modules', 'yarn.lock']);
+  });
 });
