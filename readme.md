@@ -17,7 +17,7 @@ npm install --save del-nm
 
 ## Usage
 
-```
+```sh
 $ pwd
 /Users/luftywiranda/foo
 
@@ -68,15 +68,15 @@ Returns `Promise<Array>` of deleted paths.
 Returns `Array` of deleted paths.
 
 #### path
- 
+
 Type: `string`<br />
 Default: `process.cwd()`
- 
+
 Path to perform deletion
 
 ## Related
 
-- [del-nm-cli](https://github.com/luftywiranda13/del-nm-cli) - CLI for this module
+- [del-nm-cli](https://github.com/luftywiranda13/del-nm-cli) － CLI for this module
 
 ## License
 
