@@ -1,80 +1,89 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
-const makeDir = require('make-dir');
+const fs = require('fs-extra');
 const tempy = require('tempy');
 
 const delNm = require('./');
 
-const notExists = (rootDir, files) => {
-  for (const file of files) {
-    expect(fs.existsSync(path.join(rootDir, file))).toBe(false);
-  }
-};
+describe('node_modules', () => {
+  let tempDir;
 
-let tempDir;
-
-const createDummy = lockfile => {
-  tempDir = tempy.directory();
-
-  if (lockfile) {
-    tempy.file({ name: lockfile });
-  }
-
-  return makeDir.sync(path.join(tempDir, 'node_modules'));
-};
-
-describe('only `node_modules`', () => {
-  beforeEach(() => {
-    createDummy();
+  beforeEach(async () => {
+    tempDir = tempy.directory();
+    await fs.mkdir(`${tempDir}/node_modules`);
   });
 
   test('async', async () => {
-    await delNm(tempDir);
+    expect.assertions(2);
+    const res = await delNm(tempDir);
 
-    notExists(tempDir, 'node_modules');
+    expect(res[0]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(fs.pathExistsSync(`${tempDir}/node_modules`)).toBe(false);
   });
 
-  test('sync', () => {
-    delNm.sync(tempDir);
+  test('sync', async () => {
+    const res = delNm.sync(tempDir);
 
-    notExists(tempDir, 'node_modules');
+    expect(res[0]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(fs.pathExistsSync(`${tempDir}/node_modules`)).toBe(false);
   });
 });
 
-describe('with `package-lock.json`', () => {
-  beforeEach(() => {
-    createDummy('package-lock.json');
+describe('node_modules + yarn.lock', () => {
+  let tempDir;
+
+  beforeEach(async () => {
+    tempDir = tempy.directory();
+    await fs.mkdir(`${tempDir}/node_modules`);
+    await fs.ensureFile(`${tempDir}/yarn.lock`);
   });
 
   test('async', async () => {
-    await delNm(tempDir);
+    expect.assertions(4);
+    const res = await delNm(tempDir);
 
-    notExists(tempDir, ['node_modules', 'package-lock.json']);
+    expect(res[0]).toBe(path.join(`${tempDir}/yarn.lock`));
+    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(fs.pathExistsSync(`${tempDir}/yarn.lock`)).toBe(false);
+    expect(fs.pathExistsSync(`${tempDir}/node_modules`)).toBe(false);
   });
 
   test('sync', () => {
-    delNm.sync(tempDir);
+    const res = delNm.sync(tempDir);
 
-    notExists(tempDir, ['node_modules', 'package-lock.json']);
+    expect(res[0]).toBe(path.join(`${tempDir}/yarn.lock`));
+    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(fs.pathExistsSync(`${tempDir}/yarn.lock`)).toBe(false);
+    expect(fs.pathExistsSync(`${tempDir}/node_modules`)).toBe(false);
   });
 });
 
-describe('with `yarn.lock`', () => {
-  beforeEach(() => {
-    createDummy('yarn.lock');
+describe('node_modules + package-lock.json', () => {
+  let tempDir;
+
+  beforeEach(async () => {
+    tempDir = tempy.directory();
+    await fs.mkdir(`${tempDir}/node_modules`);
+    await fs.ensureFile(`${tempDir}/package-lock.json`);
   });
 
   test('async', async () => {
-    await delNm(tempDir);
+    expect.assertions(4);
+    const res = await delNm(tempDir);
 
-    notExists(tempDir, ['node_modules', 'yarn.lock']);
+    expect(res[0]).toBe(path.join(`${tempDir}/package-lock.json`));
+    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(fs.pathExistsSync(`${tempDir}/package-lock.json`)).toBe(false);
+    expect(fs.pathExistsSync(`${tempDir}/node_modules`)).toBe(false);
   });
 
   test('sync', () => {
-    delNm.sync(tempDir);
+    const res = delNm.sync(tempDir);
 
-    notExists(tempDir, ['node_modules', 'yarn.lock']);
+    expect(res[0]).toBe(path.join(`${tempDir}/package-lock.json`));
+    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(fs.pathExistsSync(`${tempDir}/package-lock.json`)).toBe(false);
+    expect(fs.pathExistsSync(`${tempDir}/node_modules`)).toBe(false);
   });
 });
