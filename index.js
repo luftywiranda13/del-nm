@@ -3,9 +3,7 @@
 const del = require('del');
 const hasLockfile = require('has-lockfile');
 
-const asynchronous = cwd => {
-  cwd = cwd || process.cwd();
-
+const asynchronous = (cwd = process.cwd()) => {
   const lockfiles = hasLockfile(cwd);
 
   return lockfiles
@@ -13,9 +11,7 @@ const asynchronous = cwd => {
     : del('node_modules', { cwd });
 };
 
-const synchronous = cwd => {
-  cwd = cwd || process.cwd();
-
+const synchronous = (cwd = process.cwd()) => {
   const lockfiles = hasLockfile(cwd);
 
   return lockfiles
