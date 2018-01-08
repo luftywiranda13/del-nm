@@ -18,61 +18,61 @@ npm install --save del-nm
 ## Usage
 
 ```sh
-$ pwd
-/Users/luftywiranda/foo
-
-...
-└── luftywiranda
-    ├── foo
-    │   ├── node_modules
-    │   ├── package.json
-    │   └── yarn.lock
-    └── bar
-        ├── node_modules
-        ├── package.json
-        └── package-lock.json
+$ tree
+.
+├── bar
+│   ├── node_modules
+│   └── yarn.lock
+└── foo
+    ├── node_modules
+    └── package-lock.json
 ```
 
 ```js
 const delNm = require('del-nm');
 
-delNm().then(paths => {
-  console.log(paths);
-  /*
-    [
-      '/Users/luftywiranda/foo/node_modules',
-      '/Users/luftywiranda/foo/yarn.lock'
-    ]
-  */
-});
-
-delNm('../bar').then(paths => {
+delNm('bar').then(paths => {
   console.log(paths);
   /*
     [
       '/Users/luftywiranda/bar/node_modules',
-      '/Users/luftywiranda/bar/package-lock.json'
+      '/Users/luftywiranda/bar/yarn.lock'
     ]
   */
+});
+
+delNm('foo').then(paths => {
+  console.log(paths);
+  /*
+    [
+      '/Users/luftywiranda/foo/node_modules',
+      '/Users/luftywiranda/foo/package-lock.json'
+    ]
+  */
+});
+
+delNm().then(paths => {
+  console.log(paths);
+  //=> []
 });
 ```
 
 ## API
 
-### delNm([path])
+### delNm([cwd])
 
-Returns `Promise<Array>` of deleted paths.
+Returns `Promise<string[]>` of deleted paths.
 
-### delNm.sync([path])
+### delNm.sync([cwd])
 
-Returns `Array` of deleted paths.
+Returns `Array<string>` of deleted paths.
 
-#### path
+#### cwd
 
 Type: `string`<br />
 Default: `process.cwd()`
 
-Path to perform deletion
+Current working directory.
 
 ## Related
 
