@@ -6,17 +6,13 @@ const hasLockfile = require('has-lockfile');
 const asynchronous = (cwd = process.cwd()) => {
   const lockfiles = hasLockfile(cwd);
 
-  return lockfiles
-    ? del(lockfiles.concat(['node_modules']), { cwd })
-    : del('node_modules', { cwd });
+  return del(lockfiles.concat(['node_modules']), { cwd });
 };
 
 const synchronous = (cwd = process.cwd()) => {
   const lockfiles = hasLockfile(cwd);
 
-  return lockfiles
-    ? del.sync(lockfiles.concat(['node_modules']), { cwd })
-    : del.sync('node_modules', { cwd });
+  return del.sync(lockfiles.concat(['node_modules']), { cwd });
 };
 
 module.exports = asynchronous;
