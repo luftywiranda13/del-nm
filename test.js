@@ -1,108 +1,100 @@
 'use strict';
 
-const path = require('path');
-const { mkdir, createFile } = require('fs-extra');
-const tempy = require('tempy');
+const { join } = require('path');
+const { copySync, pathExistsSync, writeFileSync } = require('fs-extra');
+const fixtures = require('fixturez');
 
 const delNm = require('./');
 
-describe('node_modules', () => {
-  let tempDir;
+const f = fixtures(__dirname);
 
-  beforeEach(async () => {
-    tempDir = tempy.directory();
-    await mkdir(`${tempDir}/node_modules`);
-    process.chdir(tempDir);
+describe('in tempDir', async () => {
+  it('deletes `node_modules`', async () => {
+    expect.assertions(3);
+    const tempDir = f.temp();
+    writeFileSync(join(tempDir, 'package-lock.json'));
+    writeFileSync(join(tempDir, 'yarn.lock'));
+    copySync(
+      join(__dirname, 'node_modules', 'force-del'),
+      join(tempDir, 'node_modules')
+    );
+
+    await delNm({ cwd: tempDir, lockfiles: false });
+
+    expect(pathExistsSync(join(tempDir, 'node_modules'))).toBe(false);
+    expect(pathExistsSync(join(tempDir, 'package-lock.json'))).toBe(true);
+    expect(pathExistsSync(join(tempDir, 'yarn.lock'))).toBe(true);
   });
 
-  test('async', async () => {
+  it('deletes lockfiles', async () => {
+    expect.assertions(3);
+    const tempDir = f.temp();
+    writeFileSync(join(tempDir, 'package-lock.json'));
+    writeFileSync(join(tempDir, 'yarn.lock'));
+
+    await delNm({ cwd: tempDir });
+
+    expect(pathExistsSync(join(tempDir, 'node_modules'))).toBe(false);
+    expect(pathExistsSync(join(tempDir, 'package-lock.json'))).toBe(false);
+    expect(pathExistsSync(join(tempDir, 'yarn.lock'))).toBe(false);
+  });
+
+  it("doesn't delete anything", async () => {
     expect.assertions(1);
+    const tempDir = f.temp();
+
+    const res = await delNm({ cwd: tempDir });
+
+    expect(res).toEqual([]);
+  });
+});
+
+describe('in cwd', async () => {
+  const cwd = process.cwd();
+
+  afterEach(() => {
+    process.chdir(cwd);
+  });
+
+  it('deletes `node_modules`', async () => {
+    expect.assertions(3);
+    const tempDir = f.temp();
+    writeFileSync(join(tempDir, 'package-lock.json'));
+    writeFileSync(join(tempDir, 'yarn.lock'));
+    copySync(
+      join(__dirname, 'node_modules', 'force-del'),
+      join(tempDir, 'node_modules')
+    );
+
+    process.chdir(tempDir);
+    await delNm({ lockfiles: false });
+
+    expect(pathExistsSync(join(tempDir, 'node_modules'))).toBe(false);
+    expect(pathExistsSync(join(tempDir, 'package-lock.json'))).toBe(true);
+    expect(pathExistsSync(join(tempDir, 'yarn.lock'))).toBe(true);
+  });
+
+  it('deletes lockfiles', async () => {
+    expect.assertions(3);
+    const tempDir = f.temp();
+    writeFileSync(join(tempDir, 'package-lock.json'));
+    writeFileSync(join(tempDir, 'yarn.lock'));
+
+    process.chdir(tempDir);
+    await delNm();
+
+    expect(pathExistsSync(join(tempDir, 'node_modules'))).toBe(false);
+    expect(pathExistsSync(join(tempDir, 'package-lock.json'))).toBe(false);
+    expect(pathExistsSync(join(tempDir, 'yarn.lock'))).toBe(false);
+  });
+
+  it("doesn't delete anything", async () => {
+    expect.assertions(1);
+    const tempDir = f.temp();
+
+    process.chdir(tempDir);
     const res = await delNm();
 
-    expect(res).toEqual([path.join(`${tempDir}/node_modules`)]);
-  });
-
-  test('sync', async () => {
-    const res = delNm.sync();
-
-    expect(res).toEqual([path.join(`${tempDir}/node_modules`)]);
-  });
-});
-
-describe('node_modules + yarn.lock', () => {
-  let tempDir;
-
-  beforeEach(async () => {
-    tempDir = tempy.directory();
-    await mkdir(`${tempDir}/node_modules`);
-    await createFile(`${tempDir}/yarn.lock`);
-    process.chdir(tempDir);
-  });
-
-  test('async', async () => {
-    expect.assertions(2);
-    const res = await delNm();
-
-    expect(res[0]).toBe(path.join(`${tempDir}/yarn.lock`));
-    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
-  });
-
-  test('sync', () => {
-    const res = delNm.sync();
-
-    expect(res[0]).toBe(path.join(`${tempDir}/yarn.lock`));
-    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
-  });
-});
-
-describe('node_modules + package-lock.json', () => {
-  let tempDir;
-
-  beforeEach(async () => {
-    tempDir = tempy.directory();
-    await mkdir(`${tempDir}/node_modules`);
-    await createFile(`${tempDir}/package-lock.json`);
-    process.chdir(tempDir);
-  });
-
-  test('async', async () => {
-    expect.assertions(2);
-    const res = await delNm(tempDir);
-
-    expect(res[0]).toBe(path.join(`${tempDir}/package-lock.json`));
-    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
-  });
-
-  test('sync', () => {
-    const res = delNm.sync(tempDir);
-
-    expect(res[0]).toBe(path.join(`${tempDir}/package-lock.json`));
-    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
-  });
-});
-
-describe('node_modules + npm-shrinkwrap.json', () => {
-  let tempDir;
-
-  beforeEach(async () => {
-    tempDir = tempy.directory();
-    await mkdir(`${tempDir}/node_modules`);
-    await createFile(`${tempDir}/npm-shrinkwrap.json`);
-    process.chdir(tempDir);
-  });
-
-  test('async', async () => {
-    expect.assertions(2);
-    const res = await delNm(tempDir);
-
-    expect(res[0]).toBe(path.join(`${tempDir}/npm-shrinkwrap.json`));
-    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
-  });
-
-  test('sync', () => {
-    const res = delNm.sync(tempDir);
-
-    expect(res[0]).toBe(path.join(`${tempDir}/npm-shrinkwrap.json`));
-    expect(res[1]).toBe(path.join(`${tempDir}/node_modules`));
+    expect(res).toEqual([]);
   });
 });
