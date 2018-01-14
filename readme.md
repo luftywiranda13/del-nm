@@ -1,12 +1,11 @@
 # del-nm
 
-[![Package Version](https://img.shields.io/npm/v/del-nm.svg)](https://www.npmjs.com/package/del-nm)
-[![Build Status: Linux](https://img.shields.io/travis/luftywiranda13/del-nm/master.svg)](https://travis-ci.org/luftywiranda13/del-nm)
-[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/50ip4itb26hn8y3k/branch/master?svg=true)](https://ci.appveyor.com/project/luftywiranda13/del-nm/branch/master)
-[![Coverage Status](https://img.shields.io/codecov/c/github/luftywiranda13/del-nm/master.svg)](https://codecov.io/gh/luftywiranda13/del-nm)
-[![Downloads Status](https://img.shields.io/npm/dm/del-nm.svg)](https://npm-stat.com/charts.html?package=del-nm&from=2016-04-01)
+> Delete `node_modules` and lockfiles
 
-Delete `node_modules` and lockfiles.
+[![Package Version](https://img.shields.io/npm/v/del-nm.svg?style=flat-square)](https://www.npmjs.com/package/del-nm)
+[![Downloads Status](https://img.shields.io/npm/dm/del-nm.svg?style=flat-square)](https://npm-stat.com/charts.html?package=del-nm&from=2016-04-01)
+[![Build Status: Linux](https://img.shields.io/travis/luftywiranda13/del-nm/master.svg?style=flat-square)](https://travis-ci.org/luftywiranda13/del-nm)
+[![Coverage Status](https://img.shields.io/codecov/c/github/luftywiranda13/del-nm/master.svg?style=flat-square)](https://codecov.io/gh/luftywiranda13/del-nm)
 
 Useful to perform fresh installation of dependencies.
 
@@ -32,7 +31,7 @@ $ tree
 ```js
 const delNm = require('del-nm');
 
-delNm('bar').then(paths => {
+delNm({ cwd: 'bar' }).then(paths => {
   console.log(paths);
   /*
     [
@@ -42,7 +41,7 @@ delNm('bar').then(paths => {
   */
 });
 
-delNm('foo').then(paths => {
+delNm({ cwd: 'foo' }).then(paths => {
   console.log(paths);
   /*
     [
@@ -60,24 +59,33 @@ delNm().then(paths => {
 
 ## API
 
-### delNm([cwd])
+### delNm([options])
 
-Returns `Promise<string[]>` of deleted paths.
+Returns `Promise<Array>` of deleted paths.
 
-### delNm.sync([cwd])
+#### options
 
-Returns `Array<string>` of deleted paths.
+Type: `Object`
 
-#### cwd
+##### cwd
 
 Type: `string`<br />
 Default: `process.cwd()`
 
 Current working directory.
 
+##### lockfiles
+
+Type: `boolean`<br />
+Default: `true`
+
+Set this to `false` to not delete lockfiles. Remember that `npm-shrinkwrap.json` will also be deleted when this option is set to `true`.
+
 ## Related
 
 * [del-nm-cli](https://github.com/luftywiranda13/del-nm-cli) － CLI for this module
+* [force-del](https://github.com/luftywiranda13/force-del) － Force delete files or folders using glob patterns
+* [remove-lockfiles](https://github.com/luftywiranda13/remove-lockfiles) － Prevent committing lockfiles
 
 ## License
 
