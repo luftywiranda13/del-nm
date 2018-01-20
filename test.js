@@ -11,9 +11,12 @@ const f = fixtures(__dirname);
 describe('in tempDir', async () => {
   it('deletes `node_modules`', async () => {
     expect.assertions(3);
+
     const tempDir = f.temp();
+
     writeFileSync(join(tempDir, 'package-lock.json'));
     writeFileSync(join(tempDir, 'yarn.lock'));
+
     copySync(
       join(__dirname, 'node_modules', 'force-del'),
       join(tempDir, 'node_modules')
@@ -28,7 +31,9 @@ describe('in tempDir', async () => {
 
   it('deletes lockfiles', async () => {
     expect.assertions(3);
+
     const tempDir = f.temp();
+
     writeFileSync(join(tempDir, 'package-lock.json'));
     writeFileSync(join(tempDir, 'yarn.lock'));
 
@@ -41,6 +46,7 @@ describe('in tempDir', async () => {
 
   it("doesn't delete anything", async () => {
     expect.assertions(1);
+
     const tempDir = f.temp();
 
     const res = await delNm({ cwd: tempDir });
@@ -58,9 +64,12 @@ describe('in cwd', async () => {
 
   it('deletes `node_modules`', async () => {
     expect.assertions(3);
+
     const tempDir = f.temp();
+
     writeFileSync(join(tempDir, 'package-lock.json'));
     writeFileSync(join(tempDir, 'yarn.lock'));
+
     copySync(
       join(__dirname, 'node_modules', 'force-del'),
       join(tempDir, 'node_modules')
@@ -76,7 +85,9 @@ describe('in cwd', async () => {
 
   it('deletes lockfiles', async () => {
     expect.assertions(3);
+
     const tempDir = f.temp();
+
     writeFileSync(join(tempDir, 'package-lock.json'));
     writeFileSync(join(tempDir, 'yarn.lock'));
 
@@ -90,6 +101,7 @@ describe('in cwd', async () => {
 
   it("doesn't delete anything", async () => {
     expect.assertions(1);
+
     const tempDir = f.temp();
 
     process.chdir(tempDir);
