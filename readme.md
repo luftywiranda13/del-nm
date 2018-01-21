@@ -1,5 +1,7 @@
 # del-nm
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/luftywiranda13/del-nm.svg)](https://greenkeeper.io/)
+
 > Delete `node_modules` and lockfiles
 
 [![Package Version](https://img.shields.io/npm/v/del-nm.svg?style=flat-square)](https://www.npmjs.com/package/del-nm)
