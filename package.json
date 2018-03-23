@@ -21,7 +21,7 @@
     "index.js"
   ],
   "dependencies": {
-    "force-del": "^1.0.3",
+    "force-del": "^2.0.0",
     "has-lockfile": "^4.0.0"
   },
   "devDependencies": {
