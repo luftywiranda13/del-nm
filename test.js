@@ -4,7 +4,7 @@ const { join } = require('path');
 const { copySync, writeFileSync } = require('fs-extra');
 const fixtures = require('fixturez');
 
-const delNm = require('./');
+const delNm = require('.');
 
 const cwd = process.cwd();
 const f = fixtures(__dirname);
